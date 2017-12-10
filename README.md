@@ -1,1 +1,3 @@
 # seminarrest
+
+Testing rest API
