@@ -1,3 +1,3 @@
 # seminarrest
 
-Testing rest API
+Testing RESTful API server with NodeJS

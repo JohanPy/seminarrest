@@ -2,30 +2,26 @@
  
 
 var math = require('mathjs');
-var crypto = require('crypto')
-var tokenhex = "test"
- 
+//initializing an expired token
+var tokenhex = "oldTK";
+var dateTok = 0;
 
 exports.login = function(req, res) {
   if (req.body.login == "admin" && req.body.pass == "admin") {
-//    crypto.randomBytes(48, function(err, buffer) {
-//    tokenhex = buffer.toString('hex'); });
-    tokenhex = Math.random().toString(36).substr(2, 15)
-    res.send({token: tokenhex});
+    tokenhex = Math.random().toString(36).substr(2, 12);
+    dateTok = Date.now();
+    res.json({token: tokenhex});
   } else {
-    res.send({fault: "invalid login and password"});
-    console.log('body: ', req.body);
+    res.json({fault: "invalid login and password"});
          }
 };
 
 
 exports.compute = function(req, res) {
-    if (req.body.token == tokenhex) {
-       var resultat = math.eval(req.body.expression)
-       res.json({result: resultat});
+    if (req.body.token == tokenhex && dateTok > Date.now() -(15*60*1000)) {
+       var result = math.eval(req.body.expression);
+       res.json({result: result});
     } else {
-       console.log('body: ', req.body);
-       console.log('token'+tokenhex);
        res.json({result: "case not covered by the contract"});
            }
 };
